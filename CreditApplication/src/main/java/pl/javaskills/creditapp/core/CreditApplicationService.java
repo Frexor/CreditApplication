@@ -50,8 +50,4 @@ public class CreditApplicationService {
         return decision;
     }
 
-
-
-
-
 }
