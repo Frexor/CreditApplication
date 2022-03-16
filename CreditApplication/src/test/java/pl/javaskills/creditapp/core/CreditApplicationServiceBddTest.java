@@ -26,7 +26,7 @@ class CreditApplicationServiceBddTest {
     @DisplayName("should return Decision is NEGATIVE_REQUIREMENTS_NOT_MET, minimum loan amount requirement is not met")
     public void test1() {
         //given
-        Person person = Person.Builder
+        NaturalPerson person = NaturalPerson.Builder
                 .create()
                 .withPersonalData(PersonalData.Builder.create()
                         .withEducation(Education.MIDDLE)
