@@ -13,11 +13,11 @@ import static pl.javaskills.creditapp.core.DecisionType.*;
 
 public class CreditApplicationService {
     private static final Logger log = LoggerFactory.getLogger(CreditApplicationService.class);
-    private final PersonScoringCalculator personScoringCalculator;
+    private final PersonScoringCalculatorFactory personScoringCalculatorFactory;
     private final CreditRatingCalculator creditRatingCalculator;
 
-    public CreditApplicationService(PersonScoringCalculator calculator, CreditRatingCalculator creditRatingCalculator) {
-        this.personScoringCalculator = calculator;
+    public CreditApplicationService(PersonScoringCalculatorFactory personScoringCalculatorFactory, CreditRatingCalculator creditRatingCalculator) {
+        this.personScoringCalculatorFactory = personScoringCalculatorFactory;
         this.creditRatingCalculator = creditRatingCalculator;
     }
 
@@ -28,7 +28,7 @@ public class CreditApplicationService {
 
 
         Person person = creditApplication.getPerson();
-        int scoring = personScoringCalculator.calculate(person);
+        int scoring = personScoringCalculatorFactory.getCalculator(person).calculate(person);
         CreditApplicationDecision decision;
         if (scoring < 300) {
             decision = new CreditApplicationDecision(NEGATIVE_SCORING, person.getPersonalData(), null, scoring);
