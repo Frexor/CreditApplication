@@ -2,24 +2,19 @@ package pl.javaskills.creditapp.core;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import pl.javaskills.creditapp.core.model.*;
 import pl.javaskills.creditapp.core.scoring.EducationCalculator;
 import pl.javaskills.creditapp.core.scoring.IncomeCalculator;
 import pl.javaskills.creditapp.core.scoring.MaritalStatusCalculator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.eq;
 
 class CreditApplicationServiceBddTest {
-
-    NaturalPersonScoringCalculator naturalPersonScoringCalculator = new NaturalPersonScoringCalculator(new EducationCalculator(), new MaritalStatusCalculator(), new IncomeCalculator());
-    SelfEmployedScoringCalculator selfEmployedScoringCalculator = new SelfEmployedScoringCalculator(new EducationCalculator(), new MaritalStatusCalculator(), new IncomeCalculator());
-    PersonScoringCalculatorFactory personScoringCalculatorFactory = new PersonScoringCalculatorFactory(naturalPersonScoringCalculator, selfEmployedScoringCalculator);
+    private EducationCalculator educationCalculator = new EducationCalculator();
+    private MaritalStatusCalculator maritalStatusCalculator = new MaritalStatusCalculator();
+    private IncomeCalculator incomeCalculator = new IncomeCalculator();
+    private SelfEmployedScoringCalculator selfEmployedScoringCalculator = new SelfEmployedScoringCalculator();
+    private PersonScoringCalculatorFactory personScoringCalculatorFactory = new PersonScoringCalculatorFactory(selfEmployedScoringCalculator, educationCalculator, maritalStatusCalculator, incomeCalculator);
     private CreditApplicationService cut = new CreditApplicationService(personScoringCalculatorFactory, new CreditRatingCalculator());
 
     @Test
@@ -36,7 +31,7 @@ class CreditApplicationServiceBddTest {
                 .withFinanceData(new FinanceData(new SourceOfIncome(IncomeType.SELF_EMPLOYMENT, 10000.00)))
                 .build();
         PurposeOfLoan purposeOfLoan = new PurposeOfLoan(PurposeOfLoanType.MORTGAGE, 50000.00, 30);
-        CreditApplication creditApplication = CreditApplicationTestFactory.create(person,purposeOfLoan);
+        CreditApplication creditApplication = CreditApplicationTestFactory.create(person, purposeOfLoan);
 
         //when
         CreditApplicationDecision decision = cut.getDecision(creditApplication);
@@ -62,7 +57,7 @@ class CreditApplicationServiceBddTest {
                 .withYearsSinceFounded(1)
                 .build();
         PurposeOfLoan purposeOfLoan = new PurposeOfLoan(PurposeOfLoanType.MORTGAGE, 500000.00, 30);
-        CreditApplication creditApplication = CreditApplicationTestFactory.create(person,purposeOfLoan);
+        CreditApplication creditApplication = CreditApplicationTestFactory.create(person, purposeOfLoan);
 
         //when
         CreditApplicationDecision decision = cut.getDecision(creditApplication);
@@ -87,7 +82,7 @@ class CreditApplicationServiceBddTest {
                 .withYearsSinceFounded(3)
                 .build();
         PurposeOfLoan purposeOfLoan = new PurposeOfLoan(PurposeOfLoanType.MORTGAGE, 500000.00, 30);
-        CreditApplication creditApplication = CreditApplicationTestFactory.create(person,purposeOfLoan);
+        CreditApplication creditApplication = CreditApplicationTestFactory.create(person, purposeOfLoan);
 
         //when
         CreditApplicationDecision decision = cut.getDecision(creditApplication);

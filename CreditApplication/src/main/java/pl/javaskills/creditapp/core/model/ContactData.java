@@ -3,10 +3,10 @@ package pl.javaskills.creditapp.core.model;
 import java.util.Optional;
 
 public class ContactData {
-    private String email;
-    private String phoneNumber;
-    private Address homeAddress;
-    private Optional<Address> correspondenceAddress;
+    private final String email;
+    private final String phoneNumber;
+    private final Address homeAddress;
+    private final Optional<Address> correspondenceAddress;
 
     private ContactData(String email, String phoneNumber, Address homeAddress, Optional<Address> correspondenceAddress) {
         this.email = email;

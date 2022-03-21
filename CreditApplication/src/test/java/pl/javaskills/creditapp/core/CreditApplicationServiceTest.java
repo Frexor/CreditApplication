@@ -12,6 +12,7 @@ import pl.javaskills.creditapp.core.model.CreditApplication;
 import pl.javaskills.creditapp.core.model.CreditApplicationTestFactory;
 import pl.javaskills.creditapp.core.model.Person;
 import pl.javaskills.creditapp.core.model.PurposeOfLoanType;
+import pl.javaskills.creditapp.core.scoring.PersonCalculator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -24,7 +25,7 @@ class CreditApplicationServiceTest {
     private CreditApplicationService cut;
 
     @Mock
-    private PersonScoringCalculator calculatorMock;
+    private PersonCalculator personCalculatorMock;
 
     @Mock
     private PersonScoringCalculatorFactory personScoringCalculatorFactoryMock;
@@ -35,7 +36,7 @@ class CreditApplicationServiceTest {
     @BeforeEach
     public void init(){
         BDDMockito.given(personScoringCalculatorFactoryMock.getCalculator(any(Person.class)))
-                .willReturn(calculatorMock);
+                .willReturn(personCalculatorMock);
     }
 
     @Test
@@ -43,7 +44,7 @@ class CreditApplicationServiceTest {
     public void test1() {
         //given
         CreditApplication creditApplication = CreditApplicationTestFactory.create();
-        BDDMockito.given(calculatorMock.calculate(eq(creditApplication.getPerson())))
+        BDDMockito.given(personCalculatorMock.calculate(eq(creditApplication.getPerson())))
                 .willReturn(100);
 
         //when
@@ -58,7 +59,7 @@ class CreditApplicationServiceTest {
     public void test2() {
         //given
         CreditApplication creditApplication = CreditApplicationTestFactory.create();
-        BDDMockito.given(calculatorMock.calculate(eq(creditApplication.getPerson())))
+        BDDMockito.given(personCalculatorMock.calculate(eq(creditApplication.getPerson())))
                 .willReturn(350);
 
         //when
@@ -73,7 +74,7 @@ class CreditApplicationServiceTest {
     public void test3() {
         //given
         CreditApplication creditApplication = CreditApplicationTestFactory.create(190000.00);
-        BDDMockito.given(calculatorMock.calculate(eq(creditApplication.getPerson())))
+        BDDMockito.given(personCalculatorMock.calculate(eq(creditApplication.getPerson())))
                 .willReturn(450);
 
         BDDMockito.given(creditRatingCalculatorMock.calculate(eq(creditApplication))).
@@ -91,7 +92,7 @@ class CreditApplicationServiceTest {
     public void test4() {
         //given
         CreditApplication creditApplication = CreditApplicationTestFactory.create(150000.00);
-        BDDMockito.given(calculatorMock.calculate(eq(creditApplication.getPerson())))
+        BDDMockito.given(personCalculatorMock.calculate(eq(creditApplication.getPerson())))
                 .willReturn(450);
         BDDMockito.given(creditRatingCalculatorMock.calculate(eq(creditApplication))).
                 willReturn(151000.00);

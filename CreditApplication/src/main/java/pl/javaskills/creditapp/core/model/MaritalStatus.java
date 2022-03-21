@@ -7,7 +7,7 @@ public enum MaritalStatus {
     SEPARATED(100),
     WIDOWED;
 
-    private int scoringPoints;
+    private final int scoringPoints;
 
     MaritalStatus() {
         this.scoringPoints = 0;

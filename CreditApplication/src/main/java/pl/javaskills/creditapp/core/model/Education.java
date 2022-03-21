@@ -8,7 +8,7 @@ public enum Education {
     POST_SECONDARY(),
     TERTIARY(100);
 
-    private int scoringPoints;
+    private final int scoringPoints;
 
     Education() {
         this.scoringPoints = 0;
