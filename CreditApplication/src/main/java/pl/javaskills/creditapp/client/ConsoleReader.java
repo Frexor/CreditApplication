@@ -5,9 +5,10 @@ import pl.javaskills.creditapp.core.model.*;
 
 import java.util.Scanner;
 
-public class ConsoleReader {
+public class ConsoleReader implements CreditApplicationReader{
 
-    public CreditApplication readInputParameters() {
+    @Override
+    public CreditApplication read() {
         Scanner in = new Scanner(System.in);
 
         String name = getName(in);

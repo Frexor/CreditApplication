@@ -8,11 +8,13 @@ import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import pl.javaskills.creditapp.core.exception.ValidationException;
 import pl.javaskills.creditapp.core.model.CreditApplication;
 import pl.javaskills.creditapp.core.model.CreditApplicationTestFactory;
 import pl.javaskills.creditapp.core.model.Person;
 import pl.javaskills.creditapp.core.model.PurposeOfLoanType;
 import pl.javaskills.creditapp.core.scoring.PersonCalculator;
+import pl.javaskills.creditapp.core.validation.CreditApplicationValidator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -25,7 +27,10 @@ class CreditApplicationServiceTest {
     private CreditApplicationService cut;
 
     @Mock
-    private PersonCalculator personCalculatorMock;
+    private PersonCalculator personalCalculatorMock;
+
+    @Mock
+    private CreditApplicationValidator creditApplicationValidatorMock;
 
     @Mock
     private PersonScoringCalculatorFactory personScoringCalculatorFactoryMock;
@@ -34,17 +39,21 @@ class CreditApplicationServiceTest {
     private CreditRatingCalculator creditRatingCalculatorMock;
 
     @BeforeEach
-    public void init(){
+    public void init() throws ValidationException {
         BDDMockito.given(personScoringCalculatorFactoryMock.getCalculator(any(Person.class)))
-                .willReturn(personCalculatorMock);
+                .willReturn(personalCalculatorMock);
+
+        BDDMockito.doNothing()
+                .when(creditApplicationValidatorMock)
+                .validate(any(CreditApplication.class));
     }
 
     @Test
     @DisplayName("should return NEGATIVE_SCORING decision, when scoring is < 300")
-    public void test1() {
+    public void test1() throws IllegalAccessException {
         //given
         CreditApplication creditApplication = CreditApplicationTestFactory.create();
-        BDDMockito.given(personCalculatorMock.calculate(eq(creditApplication.getPerson())))
+        BDDMockito.given(personalCalculatorMock.calculate(eq(creditApplication.getPerson())))
                 .willReturn(100);
 
         //when
@@ -56,10 +65,10 @@ class CreditApplicationServiceTest {
 
     @Test
     @DisplayName("should return CONTACT_REQUIRED decision, when scoring is <= 400")
-    public void test2() {
+    public void test2() throws IllegalAccessException {
         //given
         CreditApplication creditApplication = CreditApplicationTestFactory.create();
-        BDDMockito.given(personCalculatorMock.calculate(eq(creditApplication.getPerson())))
+        BDDMockito.given(personalCalculatorMock.calculate(eq(creditApplication.getPerson())))
                 .willReturn(350);
 
         //when
@@ -71,10 +80,10 @@ class CreditApplicationServiceTest {
 
     @Test
     @DisplayName("should return NEGATIVE_RATING decision, when scoring is > 400 and credit rating > expected loan amount")
-    public void test3() {
+    public void test3() throws IllegalAccessException {
         //given
         CreditApplication creditApplication = CreditApplicationTestFactory.create(190000.00);
-        BDDMockito.given(personCalculatorMock.calculate(eq(creditApplication.getPerson())))
+        BDDMockito.given(personalCalculatorMock.calculate(eq(creditApplication.getPerson())))
                 .willReturn(450);
 
         BDDMockito.given(creditRatingCalculatorMock.calculate(eq(creditApplication))).
@@ -89,10 +98,10 @@ class CreditApplicationServiceTest {
 
     @Test
     @DisplayName("should return POSITIVE decision, when scoring is > 400 and credit rating <= expected loan amount")
-    public void test4() {
+    public void test4() throws IllegalAccessException {
         //given
         CreditApplication creditApplication = CreditApplicationTestFactory.create(150000.00);
-        BDDMockito.given(personCalculatorMock.calculate(eq(creditApplication.getPerson())))
+        BDDMockito.given(personalCalculatorMock.calculate(eq(creditApplication.getPerson())))
                 .willReturn(450);
         BDDMockito.given(creditRatingCalculatorMock.calculate(eq(creditApplication))).
                 willReturn(151000.00);
