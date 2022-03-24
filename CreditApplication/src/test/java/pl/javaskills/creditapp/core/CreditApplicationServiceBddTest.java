@@ -11,6 +11,9 @@ import pl.javaskills.creditapp.core.validation.PersonValidator;
 import pl.javaskills.creditapp.core.validation.PersonalDataValidator;
 import pl.javaskills.creditapp.core.validation.PurposeOfLoanValidator;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CreditApplicationServiceBddTest {
@@ -19,22 +22,23 @@ class CreditApplicationServiceBddTest {
     private IncomeCalculator incomeCalculator = new IncomeCalculator();
     private SelfEmployedScoringCalculator selfEmployedScoringCalculator = new SelfEmployedScoringCalculator();
     private PersonScoringCalculatorFactory personScoringCalculatorFactory = new PersonScoringCalculatorFactory(selfEmployedScoringCalculator, educationCalculator, maritalStatusCalculator, incomeCalculator);
-    private CreditApplicationValidator creditApplicationValidator = new CreditApplicationValidator(new PersonValidator(new PersonalDataValidator()),new PurposeOfLoanValidator());
+    private CreditApplicationValidator creditApplicationValidator = new CreditApplicationValidator(new PersonValidator(new PersonalDataValidator()), new PurposeOfLoanValidator());
     private CreditApplicationService cut = new CreditApplicationService(personScoringCalculatorFactory, new CreditRatingCalculator(), creditApplicationValidator);
 
     @Test
     @DisplayName("should return Decision is NEGATIVE_REQUIREMENTS_NOT_MET, min loan amount  requirement is not met")
     public void test1() throws IllegalAccessException {
         //given
+        List<FamilyMember> familyMemberList = Arrays.asList(new FamilyMember("Grzegorz", 18));
         NaturalPerson person = NaturalPerson.Builder
                 .create()
+                .withFamilyMembers(familyMemberList)
                 .withPersonalData(PersonalData.Builder.create()
                         .withName("Test")
                         .withLastName("Test")
                         .withMothersMaidenName("Test")
                         .withEducation(Education.MIDDLE)
                         .withMaritalStatus(MaritalStatus.MARRIED)
-                        .withNumberOfDependants(2)
                         .build())
                 .withFinanceData(new FinanceData(new SourceOfIncome(IncomeType.SELF_EMPLOYMENT, 10000.00)))
                 .build();
@@ -55,15 +59,16 @@ class CreditApplicationServiceBddTest {
     @DisplayName("should return Decision is negative, when years since founded <2")
     public void test2() throws IllegalAccessException {
         //given
+        List<FamilyMember> familyMemberList = Arrays.asList(new FamilyMember("Grzegorz", 18));
         SelfEmployed person = SelfEmployed.Builder
                 .create()
+                .withFamilyMembers(familyMemberList)
                 .withPersonalData(PersonalData.Builder.create()
                         .withName("Test")
                         .withLastName("Test")
                         .withMothersMaidenName("Test")
                         .withEducation(Education.MIDDLE)
                         .withMaritalStatus(MaritalStatus.MARRIED)
-                        .withNumberOfDependants(2)
                         .build())
                 .withFinanceData(new FinanceData(new SourceOfIncome(IncomeType.SELF_EMPLOYMENT, 7000.00)))
                 .withYearsSinceFounded(1)
@@ -83,15 +88,16 @@ class CreditApplicationServiceBddTest {
     @DisplayName("should return Decision is contact required, when years since founded >=2")
     public void test3() throws IllegalAccessException {
         //given
+        List<FamilyMember> familyMemberList = Arrays.asList(new FamilyMember("Grzegorz", 18));
         SelfEmployed person = SelfEmployed.Builder
                 .create()
+                .withFamilyMembers(familyMemberList)
                 .withPersonalData(PersonalData.Builder.create()
                         .withName("Test")
                         .withLastName("Test")
                         .withMothersMaidenName("Test")
                         .withEducation(Education.MIDDLE)
                         .withMaritalStatus(MaritalStatus.MARRIED)
-                        .withNumberOfDependants(2)
                         .build())
                 .withFinanceData(new FinanceData(new SourceOfIncome(IncomeType.SELF_EMPLOYMENT, 7000.00)))
                 .withYearsSinceFounded(3)
