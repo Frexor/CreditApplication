@@ -29,8 +29,7 @@ public class CreditApplicationService {
     }
 
     public CreditApplicationDecision getDecision(CreditApplication creditApplication) throws IllegalAccessException {
-        String id = UUID.randomUUID().toString();
-        log.info("Application ID is " + id);
+        String id = creditApplication.getId().toString();
         MDC.put("id", id);
 
         try {

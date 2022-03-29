@@ -22,12 +22,18 @@ public class Main {
         IncomeCalculator incomeCalculator = new IncomeCalculator();
         SelfEmployedScoringCalculator selfEmployedScoringCalculator = new SelfEmployedScoringCalculator();
         PersonScoringCalculatorFactory personScoringCalculatorFactory = new PersonScoringCalculatorFactory(selfEmployedScoringCalculator, educationCalculator, maritalStatusCalculator, incomeCalculator);
-        CreditApplicationValidator creditApplicationValidator = new CreditApplicationValidator(new PersonValidator(new PersonalDataValidator()),new PurposeOfLoanValidator());
+        CreditApplicationValidator creditApplicationValidator = new CreditApplicationValidator(new PersonValidator(new PersonalDataValidator()), new PurposeOfLoanValidator());
         CreditApplicationService service = new CreditApplicationService(personScoringCalculatorFactory, new CreditRatingCalculator(), creditApplicationValidator);
         CreditApplication creditApplication = reader.read();
-
+        CreditApplicationManager manager = new CreditApplicationManager(service);
         CreditApplicationDecision decision = service.getDecision(creditApplication);
-
         System.out.println(decision.getDecisionString());
+
+        manager.add(reader.read());
+        manager.add(reader.read());
+        manager.add(reader.read());
+        manager.add(reader.read());
+
+        manager.startProcessing();
     }
 }
