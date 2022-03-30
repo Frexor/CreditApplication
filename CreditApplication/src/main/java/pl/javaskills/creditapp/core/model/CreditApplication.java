@@ -1,30 +1,35 @@
 package pl.javaskills.creditapp.core.model;
 
-import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.UUID;
 
 public class CreditApplication {
-    private final Optional<NaturalPerson> naturalPerson;
-    private final Optional<SelfEmployed> selfEmployed;
+    private final UUID id;
+    private final Person person;
     private final PurposeOfLoan purposeOfLoan;
+    private final Set<Guarantor> guarantors;
 
-    public CreditApplication(NaturalPerson person, PurposeOfLoan purposeOfLoan) {
-        this.naturalPerson = Optional.of(person);
-        this.selfEmployed = Optional.empty();
+    public CreditApplication(Person person, PurposeOfLoan purposeOfLoan) {
+        this.person = person;
         this.purposeOfLoan = purposeOfLoan;
+        this.id = UUID.randomUUID();
+        this.guarantors = new TreeSet<>();
     }
 
-    public CreditApplication(SelfEmployed person, PurposeOfLoan purposeOfLoan) {
-        this.naturalPerson = Optional.empty();
-        this.selfEmployed = Optional.of(person);
+    public CreditApplication(Person person, PurposeOfLoan purposeOfLoan, Set<Guarantor> guarantors) {
+        this.person = person;
         this.purposeOfLoan = purposeOfLoan;
+        this.id = UUID.randomUUID();
+        this.guarantors = new TreeSet<>(guarantors);
     }
 
-    public Optional<NaturalPerson> getNaturalPerson() {
-        return naturalPerson;
+    public Set<Guarantor> getGuarantors() {
+        return guarantors;
     }
 
-    public Optional<SelfEmployed> getSelfEmployed() {
-        return selfEmployed;
+    public UUID getId() {
+        return id;
     }
 
     public PurposeOfLoan getPurposeOfLoan() {
@@ -32,9 +37,6 @@ public class CreditApplication {
     }
 
     public Person getPerson() {
-        if (naturalPerson.isPresent()){
-            return naturalPerson.get();
-        }
-        return selfEmployed.get();
+        return person;
     }
 }

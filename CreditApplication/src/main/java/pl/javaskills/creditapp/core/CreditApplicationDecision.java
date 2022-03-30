@@ -17,8 +17,8 @@ public class CreditApplicationDecision {
         this.scoring = scoring;
     }
 
-    public String getDecisionString(){
-        switch (type){
+    public String getDecisionString() {
+        switch (type) {
             case POSITIVE:
                 return "Congratulations " + personalData.getName() + " " + personalData.getLastName() + ", decision is positive";
             case NEGATIVE_SCORING:

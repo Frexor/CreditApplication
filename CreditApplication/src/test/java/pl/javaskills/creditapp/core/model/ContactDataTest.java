@@ -3,18 +3,19 @@ package pl.javaskills.creditapp.core.model;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ContactDataTest {
 
     @Test
-    @DisplayName("should set Optional.empty correspondence address, when homeAddress is the same")
-    public void test1(){
+    @DisplayName("should set Optional.empty correspondence address, when home address is the same")
+    public void test1() {
         //given & when
         ContactData contactData = ContactData.Builder
                 .create()
-                .withCorrespondenceAddress(new Address("Rumuńska", "Białystok", "15-011", "Podlaskie", "69"))
-                .withHomeAddress(new Address("Rumuńska", "Białystok", "15-011", "Podlaskie", "69"))
+                .withCorrespondenceAddress(new Address("Wrocławska", "Wrocław", "50-500", "Dolnyslask", "24/5"))
+                .withHomeAddress(new Address("Wrocławska", "Wrocław", "50-500", "Dolnyslask", "24/5"))
                 .build();
 
         //then
@@ -22,11 +23,11 @@ public class ContactDataTest {
     }
 
     @Test
-    @DisplayName("should set Optional.of correspondence address, when homeAddress is NOT the same")
-    public void test2(){
+    @DisplayName("should set Optional.of correspondence address, when home address is NOT the same")
+    public void test2() {
         //given
-        final Address correspondenceAddress = new Address("Porzeczkowa", "Krynki", "16-690", "Podlaskie", "69");
-        final Address homeAddress = new Address("Rumuńska", "Białystok", "15-011", "Podlaskie", "69");
+        final Address correspondenceAddress = new Address("Komandorska", "Krakow", "50-500", "Dolnyslask", "24/5");
+        final Address homeAddress = new Address("Wrocławska", "Wrocław", "50-500", "Dolnyslask", "24/5");
 
         //when
         ContactData contactData = ContactData.Builder
@@ -38,6 +39,5 @@ public class ContactDataTest {
         //then
         assertTrue(contactData.getCorrespondenceAddress().isPresent());
         assertEquals(correspondenceAddress, contactData.getCorrespondenceAddress().get());
-
     }
 }

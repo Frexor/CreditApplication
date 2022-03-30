@@ -4,8 +4,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pl.javaskills.creditapp.core.model.*;
 import pl.javaskills.creditapp.core.scoring.EducationCalculator;
+import pl.javaskills.creditapp.core.scoring.GuarantorsCalculator;
 import pl.javaskills.creditapp.core.scoring.IncomeCalculator;
 import pl.javaskills.creditapp.core.scoring.MaritalStatusCalculator;
+import pl.javaskills.creditapp.core.validation.*;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -14,19 +19,26 @@ class CreditApplicationServiceBddTest {
     private MaritalStatusCalculator maritalStatusCalculator = new MaritalStatusCalculator();
     private IncomeCalculator incomeCalculator = new IncomeCalculator();
     private SelfEmployedScoringCalculator selfEmployedScoringCalculator = new SelfEmployedScoringCalculator();
-    private PersonScoringCalculatorFactory personScoringCalculatorFactory = new PersonScoringCalculatorFactory(selfEmployedScoringCalculator, educationCalculator, maritalStatusCalculator, incomeCalculator);
-    private CreditApplicationService cut = new CreditApplicationService(personScoringCalculatorFactory, new CreditRatingCalculator());
+    private GuarantorsCalculator guarantorsCalculator = new GuarantorsCalculator();
+    private GuarantorValidator guarantorValidator = new GuarantorValidator();
+    private PersonScoringCalculatorFactory personScoringCalculatorFactory = new PersonScoringCalculatorFactory(selfEmployedScoringCalculator, educationCalculator, maritalStatusCalculator, incomeCalculator, guarantorsCalculator);
+    private CreditApplicationValidator creditApplicationValidator = new CreditApplicationValidator(new PersonValidator(new PersonalDataValidator()), new PurposeOfLoanValidator(), guarantorValidator);
+    private CreditApplicationService cut = new CreditApplicationService(personScoringCalculatorFactory, new CreditRatingCalculator(), creditApplicationValidator);
 
     @Test
-    @DisplayName("should return Decision is NEGATIVE_REQUIREMENTS_NOT_MET, minimum loan amount requirement is not met")
+    @DisplayName("should return Decision is NEGATIVE_REQUIREMENTS_NOT_MET, min loan amount  requirement is not met")
     public void test1() {
         //given
+        List<FamilyMember> familyMemberList = Arrays.asList(new FamilyMember("John", 18));
         NaturalPerson person = NaturalPerson.Builder
                 .create()
+                .withFamilyMembers(familyMemberList)
                 .withPersonalData(PersonalData.Builder.create()
+                        .withName("Test")
+                        .withLastName("Test")
+                        .withMothersMaidenName("Test")
                         .withEducation(Education.MIDDLE)
                         .withMaritalStatus(MaritalStatus.MARRIED)
-                        .withNumberOfDependants(2)
                         .build())
                 .withFinanceData(new FinanceData(new SourceOfIncome(IncomeType.SELF_EMPLOYMENT, 10000.00)))
                 .build();
@@ -35,6 +47,7 @@ class CreditApplicationServiceBddTest {
 
         //when
         CreditApplicationDecision decision = cut.getDecision(creditApplication);
+
         //then
         assertEquals(DecisionType.NEGATIVE_REQUIREMENTS_NOT_MET, decision.getType());
         assertEquals(600, decision.getScoring());
@@ -46,12 +59,16 @@ class CreditApplicationServiceBddTest {
     @DisplayName("should return Decision is negative, when years since founded <2")
     public void test2() {
         //given
+        List<FamilyMember> familyMemberList = Arrays.asList(new FamilyMember("John", 18));
         SelfEmployed person = SelfEmployed.Builder
                 .create()
+                .withFamilyMembers(familyMemberList)
                 .withPersonalData(PersonalData.Builder.create()
+                        .withName("Test")
+                        .withLastName("Test")
+                        .withMothersMaidenName("Test")
                         .withEducation(Education.MIDDLE)
                         .withMaritalStatus(MaritalStatus.MARRIED)
-                        .withNumberOfDependants(2)
                         .build())
                 .withFinanceData(new FinanceData(new SourceOfIncome(IncomeType.SELF_EMPLOYMENT, 7000.00)))
                 .withYearsSinceFounded(1)
@@ -61,22 +78,26 @@ class CreditApplicationServiceBddTest {
 
         //when
         CreditApplicationDecision decision = cut.getDecision(creditApplication);
+
         //then
         assertEquals(DecisionType.NEGATIVE_SCORING, decision.getType());
         assertEquals(200, decision.getScoring());
-
     }
 
     @Test
     @DisplayName("should return Decision is contact required, when years since founded >=2")
     public void test3() {
         //given
+        List<FamilyMember> familyMemberList = Arrays.asList(new FamilyMember("John", 18));
         SelfEmployed person = SelfEmployed.Builder
                 .create()
+                .withFamilyMembers(familyMemberList)
                 .withPersonalData(PersonalData.Builder.create()
+                        .withName("Test")
+                        .withLastName("Test")
+                        .withMothersMaidenName("Test")
                         .withEducation(Education.MIDDLE)
                         .withMaritalStatus(MaritalStatus.MARRIED)
-                        .withNumberOfDependants(2)
                         .build())
                 .withFinanceData(new FinanceData(new SourceOfIncome(IncomeType.SELF_EMPLOYMENT, 7000.00)))
                 .withYearsSinceFounded(3)
@@ -86,9 +107,11 @@ class CreditApplicationServiceBddTest {
 
         //when
         CreditApplicationDecision decision = cut.getDecision(creditApplication);
+
         //then
         assertEquals(DecisionType.CONTACT_REQUIRED, decision.getType());
         assertEquals(400, decision.getScoring());
-
     }
+
+
 }

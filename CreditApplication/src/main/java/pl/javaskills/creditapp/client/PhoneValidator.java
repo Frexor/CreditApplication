@@ -4,7 +4,7 @@ import pl.javaskills.creditapp.core.Constants;
 
 public class PhoneValidator {
 
-    public static boolean validate(String input){
+    public static boolean validate(String input) {
         return input.matches(Constants.PHONE_REGEX);
     }
 }
