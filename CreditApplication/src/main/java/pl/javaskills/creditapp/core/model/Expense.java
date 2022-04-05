@@ -1,9 +1,13 @@
 package pl.javaskills.creditapp.core.model;
 
+import pl.javaskills.creditapp.core.annotation.NotNull;
+
 import java.util.Objects;
 
 public class Expense {
+    @NotNull
     private final String name;
+    @NotNull
     private final ExpenseType type;
     private final double amount;
 

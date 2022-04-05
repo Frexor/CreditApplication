@@ -5,6 +5,5 @@ import pl.javaskills.creditapp.core.model.CreditApplication;
 
 public interface PostValidator {
 
-    void validate(CreditApplication creditApplication, int scoring, double rating) throws
-            RequirementNotMetException;
+    void validate(CreditApplication creditApplication, int scoring, double rating) throws RequirementNotMetException;
 }

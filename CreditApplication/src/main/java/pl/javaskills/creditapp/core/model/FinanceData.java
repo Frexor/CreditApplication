@@ -1,9 +1,16 @@
 package pl.javaskills.creditapp.core.model;
 
+import pl.javaskills.creditapp.core.annotation.NotNull;
+import pl.javaskills.creditapp.core.annotation.ValidateCollection;
+
 import java.util.*;
 
 public class FinanceData {
+    @NotNull
+    @ValidateCollection
     private final List<SourceOfIncome> sourcesOfIncome;
+    @NotNull
+    @ValidateCollection
     private final Set<Expense> expenses;
 
     public FinanceData(SourceOfIncome... sourcesOfIncome) {

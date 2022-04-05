@@ -52,7 +52,7 @@ class CreditApplicationServiceTest {
 
         BDDMockito.doNothing()
                 .when(compoundPostValidatorMock)
-                .validate(any(CreditApplication.class),anyInt(),anyDouble());
+                .validate(any(CreditApplication.class), anyInt(), anyDouble());
     }
 
     @Test

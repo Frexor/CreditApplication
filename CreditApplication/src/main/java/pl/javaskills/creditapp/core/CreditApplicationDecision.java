@@ -45,7 +45,7 @@ public class CreditApplicationDecision {
                     case TOO_HIGH_PERSONAL_EXPENSES:
                         return "Sorry, " + personalData.getName() + " " + personalData.getLastName() + ", decision is negative. Personal expenses are too high";
                     case TOO_LOW_LOAN_AMOUNT:
-                        return "Sorry, " + personalData.getName() + " " + personalData.getLastName() + ", decision is negative. Minimum loan for mortgage is " + Constants.MIN_LOAN_AMOUNT_MORTGAGE;
+                        return "Sorry, " + personalData.getName() + " " + personalData.getLastName() + ", decision is negative. Minimum loan amount for mortgage is " + Constants.MIN_LOAN_AMOUNT_MORTGAGE;
                 }
         }
 

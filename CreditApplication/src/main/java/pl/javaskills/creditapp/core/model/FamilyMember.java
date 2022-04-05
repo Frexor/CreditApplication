@@ -1,7 +1,11 @@
 package pl.javaskills.creditapp.core.model;
 
+import pl.javaskills.creditapp.core.annotation.NotNull;
+
 public class FamilyMember implements Comparable<FamilyMember> {
+    @NotNull
     private final String name;
+    @NotNull
     private final Integer age;
 
     public FamilyMember(String name, Integer age) {

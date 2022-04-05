@@ -1,13 +1,24 @@
 package pl.javaskills.creditapp.core.model;
 
+import pl.javaskills.creditapp.core.annotation.NotNull;
+import pl.javaskills.creditapp.core.annotation.ValidateCollection;
+import pl.javaskills.creditapp.core.annotation.ValidateObject;
+
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
 
 public class CreditApplication {
+    @NotNull
     private final UUID id;
+    @NotNull
+    @ValidateObject
     private final Person person;
+    @NotNull
+    @ValidateObject
     private final PurposeOfLoan purposeOfLoan;
+    @NotNull
+    @ValidateCollection
     private final Set<Guarantor> guarantors;
 
     public CreditApplication(Person person, PurposeOfLoan purposeOfLoan) {

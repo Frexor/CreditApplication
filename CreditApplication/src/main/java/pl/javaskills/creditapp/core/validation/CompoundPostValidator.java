@@ -11,6 +11,7 @@ public class CompoundPostValidator implements PostValidator {
         this.postValidators = postValidators;
     }
 
+
     @Override
     public void validate(CreditApplication creditApplication, int scoring, double rating) throws RequirementNotMetException {
         for (PostValidator postValidator : postValidators) {

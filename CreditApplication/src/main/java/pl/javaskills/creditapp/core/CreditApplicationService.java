@@ -32,6 +32,7 @@ public class CreditApplicationService {
 
         try {
             Person person = creditApplication.getPerson();
+
             //step1
             creditApplicationValidator.validate(creditApplication);
             //step2
