@@ -18,6 +18,7 @@ public class DummyCreditApplicationReader implements CreditApplicationReader {
 
         NaturalPerson person = NaturalPerson.Builder
                 .create()
+                .withPesel("12341234123")
                 .withFamilyMembers(familyMembers)
                 .withPersonalData(PersonalData.Builder.create()
                         .withName("Test")
@@ -25,6 +26,12 @@ public class DummyCreditApplicationReader implements CreditApplicationReader {
                         .withMothersMaidenName("Test")
                         .withEducation(Education.MIDDLE)
                         .withMaritalStatus(MaritalStatus.MARRIED)
+                        .build())
+                .withContactData(ContactData.Builder.create()
+                        .withEmail("test@test")
+                        .withPhoneNumber("456456456")
+                        .withHomeAddress(new Address("test", "test", "test", "test", "test"))
+                        .withCorrespondenceAddress(new Address("test", "test", "test", "test", "test"))
                         .build())
                 .withFinanceData(new FinanceData(new SourceOfIncome(IncomeType.SELF_EMPLOYMENT, 10000.00)))
                 .build();

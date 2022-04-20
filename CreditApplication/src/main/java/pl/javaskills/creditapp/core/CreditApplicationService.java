@@ -9,21 +9,29 @@ import pl.javaskills.creditapp.core.model.CreditApplication;
 import pl.javaskills.creditapp.core.model.Person;
 import pl.javaskills.creditapp.core.validation.CompoundPostValidator;
 import pl.javaskills.creditapp.core.validation.CreditApplicationValidator;
+import pl.javaskills.creditapp.di.Inject;
 
 import static pl.javaskills.creditapp.core.DecisionType.*;
 
 public class CreditApplicationService {
     private static final Logger log = LoggerFactory.getLogger(CreditApplicationService.class);
-    private final PersonScoringCalculatorFactory personScoringCalculatorFactory;
-    private final CreditRatingCalculator creditRatingCalculator;
-    private final CreditApplicationValidator creditApplicationValidator;
-    private final CompoundPostValidator compoundPostValidator;
+    @Inject
+    private PersonScoringCalculatorFactory personScoringCalculatorFactory;
+    @Inject
+    private CreditRatingCalculator creditRatingCalculator;
+    @Inject
+    private CreditApplicationValidator creditApplicationValidator;
+    @Inject
+    private CompoundPostValidator compoundPostValidator;
 
     public CreditApplicationService(PersonScoringCalculatorFactory personScoringCalculatorFactory, CreditRatingCalculator creditRatingCalculator, CreditApplicationValidator creditApplicationValidator, CompoundPostValidator compoundPostValidator) {
         this.personScoringCalculatorFactory = personScoringCalculatorFactory;
         this.creditRatingCalculator = creditRatingCalculator;
         this.creditApplicationValidator = creditApplicationValidator;
         this.compoundPostValidator = compoundPostValidator;
+    }
+
+    public CreditApplicationService() {
     }
 
     public CreditApplicationDecision getDecision(CreditApplication creditApplication) {

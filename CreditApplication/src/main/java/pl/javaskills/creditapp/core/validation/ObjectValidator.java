@@ -10,15 +10,15 @@ import pl.javaskills.creditapp.core.validation.reflection.FieldAnnotationProcess
 
 import java.lang.reflect.Field;
 import java.util.Collection;
-import java.util.Set;
+import java.util.List;
 
 public class ObjectValidator {
     private static final Logger log = LoggerFactory.getLogger(ObjectValidator.class);
 
-    private final Set<FieldAnnotationProcessor> fieldAnnotationProcessors;
-    private final Set<ClassAnnotationProcessor> classAnnotationProcessors;
+    private final List<FieldAnnotationProcessor> fieldAnnotationProcessors;
+    private final List<ClassAnnotationProcessor> classAnnotationProcessors;
 
-    public ObjectValidator(Set<FieldAnnotationProcessor> fieldAnnotationProcessors, Set<ClassAnnotationProcessor> classAnnotationProcessors) {
+    public ObjectValidator(List<FieldAnnotationProcessor> fieldAnnotationProcessors, List<ClassAnnotationProcessor> classAnnotationProcessors) {
         this.fieldAnnotationProcessors = fieldAnnotationProcessors;
         this.classAnnotationProcessors = classAnnotationProcessors;
     }
