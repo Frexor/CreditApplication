@@ -2,6 +2,7 @@ package pl.javaskills.creditapp;
 
 import pl.javaskills.creditapp.client.CreditApplicationReader;
 import pl.javaskills.creditapp.client.DummyCreditApplicationReader;
+import pl.javaskills.creditapp.core.Constants;
 import pl.javaskills.creditapp.core.CreditApplicationManager;
 import pl.javaskills.creditapp.core.validation.CompoundPostValidator;
 import pl.javaskills.creditapp.core.validation.ExpansesPostValidator;
@@ -11,8 +12,12 @@ import pl.javaskills.creditapp.core.validation.reflection.*;
 import pl.javaskills.creditapp.di.ClassInitializer;
 
 import java.util.List;
+import java.util.TimeZone;
 
 public class Main {
+    static {
+        TimeZone.setDefault(TimeZone.getTimeZone(Constants.DEFAULT_SYSTEM_ZONE_ID));
+    }
 
     public static void main(String[] args) throws Exception {
         CreditApplicationReader reader = new DummyCreditApplicationReader();

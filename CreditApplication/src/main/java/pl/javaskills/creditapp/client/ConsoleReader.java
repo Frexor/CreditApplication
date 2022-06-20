@@ -3,6 +3,7 @@ package pl.javaskills.creditapp.client;
 import pl.javaskills.creditapp.core.Constants;
 import pl.javaskills.creditapp.core.model.*;
 
+import java.time.ZoneId;
 import java.util.Scanner;
 
 public class ConsoleReader implements CreditApplicationReader {
@@ -32,7 +33,8 @@ public class ConsoleReader implements CreditApplicationReader {
         PurposeOfLoan purposeOfLoan = new PurposeOfLoan(purposeOfLoanType, purposeOfLoanAmount, period);
         FinanceData financeData = new FinanceData(sourcesOfIncome);
 
-        return new CreditApplication(NaturalPerson.Builder
+        return new CreditApplication(ZoneId.of("Europe/Warsaw"),
+                NaturalPerson.Builder
                 .create()
                 .withContactData(contactData)
                 .withFinanceData(financeData)

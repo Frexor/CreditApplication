@@ -17,6 +17,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static pl.javaskills.creditapp.util.AgeUtils.generateBirthDate;
 
 class CreditApplicationServiceBddTest {
     private EducationCalculator educationCalculator = new EducationCalculator();
@@ -36,7 +37,7 @@ class CreditApplicationServiceBddTest {
     @DisplayName("should return Decision is NEGATIVE_REQUIREMENTS_NOT_MET, min loan amount  requirement is not met")
     public void test1() {
         //given
-        List<FamilyMember> familyMemberList = Arrays.asList(new FamilyMember("John", 18));
+        List<FamilyMember> familyMemberList = Arrays.asList(new FamilyMember("John", generateBirthDate(18)));
         NaturalPerson person = NaturalPerson.Builder
                 .create()
                 .withPesel("12341234123")
@@ -73,7 +74,7 @@ class CreditApplicationServiceBddTest {
     @DisplayName("should return Decision is negative, when years since founded <2")
     public void test2() {
         //given
-        List<FamilyMember> familyMemberList = Arrays.asList(new FamilyMember("John", 18));
+        List<FamilyMember> familyMemberList = Arrays.asList(new FamilyMember("John", generateBirthDate(18)));
         SelfEmployed person = SelfEmployed.Builder
                 .create()
                 .withNip("3245234")
@@ -109,7 +110,7 @@ class CreditApplicationServiceBddTest {
     @DisplayName("should return Decision is contact required, when years since founded >=2")
     public void test3() {
         //given
-        List<FamilyMember> familyMemberList = Arrays.asList(new FamilyMember("John", 18));
+        List<FamilyMember> familyMemberList = Arrays.asList(new FamilyMember("John", generateBirthDate(18)));
         SelfEmployed person = SelfEmployed.Builder
                 .create()
                 .withNip("3245234")

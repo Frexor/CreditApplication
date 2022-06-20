@@ -11,6 +11,10 @@ import pl.javaskills.creditapp.core.validation.CompoundPostValidator;
 import pl.javaskills.creditapp.core.validation.CreditApplicationValidator;
 import pl.javaskills.creditapp.di.Inject;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+
 import static pl.javaskills.creditapp.core.DecisionType.*;
 
 public class CreditApplicationService {
@@ -37,6 +41,7 @@ public class CreditApplicationService {
     public CreditApplicationDecision getDecision(CreditApplication creditApplication) {
         String id = creditApplication.getId().toString();
         MDC.put("id", id);
+        Instant start = Instant.now();
 
         try {
             Person person = creditApplication.getPerson();
@@ -63,7 +68,9 @@ public class CreditApplicationService {
             exception.printStackTrace();
             throw new IllegalStateException();
         } finally {
-            log.info("Application processing is finished");
+            long ms1 = Duration.between(start, Instant.now()).toMillis();
+            long ms2 = Duration.between(creditApplication.getCreationDateClientZone(), ZonedDateTime.now(creditApplication.getClientTimeZone())).toMillis();
+            log.info("Application processing is finished. Took {}/{} ms", ms1, ms2);
         }
     }
 
