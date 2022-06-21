@@ -7,6 +7,7 @@ import pl.javaskills.creditapp.core.validation.reflection.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import static pl.javaskills.creditapp.core.model.CreditApplicationTestFactory.CLIENT_TIME_ZONE;
@@ -51,7 +52,7 @@ class CreditApplicationValidatorTest {
         PurposeOfLoan purposeOfLoan = new PurposeOfLoan(PurposeOfLoanType.MORTGAGE, 50000.00, 30);
         Set<Guarantor> guarantorSet = Set.of(new Guarantor("12341234123", generateBirthDate(18)),
                 new Guarantor("12341234124", generateBirthDate(41)));
-        CreditApplication creditApplication = new CreditApplication(CLIENT_TIME_ZONE, person, purposeOfLoan, guarantorSet);
+        CreditApplication creditApplication = new CreditApplication(Locale.US, CLIENT_TIME_ZONE, person, purposeOfLoan, guarantorSet);
         //when
         cut.validate(creditApplication);
     }
